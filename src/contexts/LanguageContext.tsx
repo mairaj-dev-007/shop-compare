@@ -314,9 +314,6 @@ const translations = {
     "reverse.mortgage.product": "Reverse Mortgage",
 
     // Mortgage specific translations
-    "origination.fee": "Origination Fee",
-    "no.origination.fee": "No Origination Fee",
-    "no.additional.features": "No additional features",
     "shared.equity.use.case": "Shared Equity Use Case",
     "investment.range.dollars": "Investment Range $",
     "investment.range.percentage": "Investment Range %",
@@ -632,9 +629,6 @@ const translations = {
     "reverse.mortgage.product": "Hipoteca Inversa",
 
     // Mortgage specific translations
-    "origination.fee": "Tarifa de Originación",
-    "no.origination.fee": "Sin Tarifa de Originación",
-    "no.additional.features": "Sin características adicionales",
     "shared.equity.use.case": "Caso de Uso de Capital Compartido",
     "investment.range.dollars": "Rango de Inversión $",
     "investment.range.percentage": "Rango de Inversión %",

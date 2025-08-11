@@ -152,9 +152,9 @@ export default function MoneyTransferServices() {
                             className="h-full bg-green-500"
                             style={{
                               width: `${
-                                (item.reviews.green /
-                                  (item.reviews.green +
-                                    (item.reviews.pink || 0))) *
+                                (Number(item.reviews.green) /
+                                  (Number(item.reviews.green) +
+                                    (Number(item.reviews.pink) || 0))) *
                                 100
                               }%`,
                             }}
@@ -165,8 +165,8 @@ export default function MoneyTransferServices() {
                             className="h-full bg-pink-500"
                             style={{
                               width: `${
-                                (item.reviews.pink /
-                                  (item.reviews.green + item.reviews.pink)) *
+                                (Number(item.reviews.pink) /
+                                  (Number(item.reviews.green) + Number(item.reviews.pink))) *
                                 100
                               }%`,
                             }}

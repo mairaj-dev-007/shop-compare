@@ -2,20 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/ui/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/ui/LanguageToggle";
+import { MortgageData, DataModule } from "@/types/mortgage";
 
 export default function HomePurchaseMortgages() {
   const { t } = useLanguage();
-  const [mortgageDataArray, setMortgageDataArray] = useState<any[]>([]);
+  const [mortgageDataArray, setMortgageDataArray] = useState<MortgageData[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Dynamically import homePurchaseMortgages data from data.js
     import(`../../data.js`)
       .then((dataModule) => {
-        const homePurchaseMortgagesData = (dataModule as any)
+        const homePurchaseMortgagesData = (dataModule as DataModule)
           .homePurchaseMortgages;
         if (Array.isArray(homePurchaseMortgagesData)) {
           setMortgageDataArray(homePurchaseMortgagesData);
@@ -70,19 +75,19 @@ export default function HomePurchaseMortgages() {
 
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("home")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("mortgage")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
           <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">
             {t("home.purchase.mortgages").toUpperCase()}
@@ -139,12 +144,14 @@ export default function HomePurchaseMortgages() {
                 >
                   {/* Product */}
                   <div className="flex items-start gap-4 py-4 px-6">
-                    <img
+                    <Image
                       src={mortgage.image}
                       alt={
                         mortgage.reviews?.head || t("home.purchase.mortgage")
                       }
-                      className="h-12 w-12 object-contain bg-gray-100 rounded flex-shrink-0"
+                      width={48}
+                      height={48}
+                      className="object-contain bg-gray-100 rounded flex-shrink-0"
                     />
                     <div className="min-w-0">
                       <div className="font-semibold text-blue-600 text-base truncate">
@@ -169,9 +176,10 @@ export default function HomePurchaseMortgages() {
                                     className="h-full bg-green-500"
                                     style={{
                                       width: `${
-                                        (mortgage.reviews.green /
-                                          (mortgage.reviews.green +
-                                            (mortgage.reviews.pink || 0))) *
+                                        (Number(mortgage.reviews.green) /
+                                          (Number(mortgage.reviews.green) +
+                                            (Number(mortgage.reviews.pink) ||
+                                              0))) *
                                         100
                                       }%`,
                                     }}
@@ -182,9 +190,9 @@ export default function HomePurchaseMortgages() {
                                     className="h-full bg-pink-500"
                                     style={{
                                       width: `${
-                                        (mortgage.reviews.pink /
-                                          (mortgage.reviews.green +
-                                            mortgage.reviews.pink)) *
+                                        (Number(mortgage.reviews.pink) /
+                                          (Number(mortgage.reviews.green) +
+                                            Number(mortgage.reviews.pink))) *
                                         100
                                       }%`,
                                     }}
@@ -218,7 +226,11 @@ export default function HomePurchaseMortgages() {
                     <div className="font-bold text-gray-800 text-lg mb-3">
                       {mortgage.loanAmount?.minValue &&
                       mortgage.loanAmount?.maxValue
-                        ? `$${mortgage.loanAmount.minValue.toLocaleString()}k - $${mortgage.loanAmount.maxValue.toLocaleString()}k`
+                        ? `$${parseInt(
+                            mortgage.loanAmount.minValue
+                          ).toLocaleString()}k - $${parseInt(
+                            mortgage.loanAmount.maxValue
+                          ).toLocaleString()}k`
                         : t("n.a")}
                     </div>
                     <div className="relative">
@@ -227,8 +239,12 @@ export default function HomePurchaseMortgages() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.loanAmount?.maxValue || 0) /
-                                (mortgage.loanAmount?.max || 100000)) *
+                              (parseFloat(
+                                mortgage.loanAmount?.maxValue || "0"
+                              ) /
+                                parseFloat(
+                                  mortgage.loanAmount?.max || "100000"
+                                )) *
                                 100,
                               100
                             )}%`,
@@ -256,8 +272,8 @@ export default function HomePurchaseMortgages() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.loanTerm?.maxValue || 0) /
-                                (mortgage.loanTerm?.max || 60)) *
+                              (parseFloat(mortgage.loanTerm?.maxValue || "0") /
+                                parseFloat(mortgage.loanTerm?.max || "60")) *
                                 100,
                               100
                             )}%`,
@@ -285,8 +301,12 @@ export default function HomePurchaseMortgages() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.creditScore?.maxValue || 0) /
-                                (mortgage.creditScore?.max || 800)) *
+                              (parseFloat(
+                                mortgage.creditScore?.maxValue || "0"
+                              ) /
+                                parseFloat(
+                                  mortgage.creditScore?.max || "800"
+                                )) *
                                 100,
                               100
                             )}%`,
@@ -304,7 +324,7 @@ export default function HomePurchaseMortgages() {
                   <div className="py-4 px-6">
                     <div className="space-y-2">
                       {mortgage.additional && mortgage.additional.length > 0 ? (
-                        mortgage.additional.map((feature: any, idx: number) => (
+                        mortgage.additional.map((feature, idx: number) => (
                           <div key={idx} className="flex items-center gap-2">
                             <span className="text-blue-500 text-sm">✔</span>
                             <span className="text-gray-700 text-sm">

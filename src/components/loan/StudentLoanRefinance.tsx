@@ -1,38 +1,25 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Filter, X } from "lucide-react";
+
+import { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import Header from "@/components/ui/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/ui/LanguageToggle";
+import { LoanData, DataModule } from "@/types";
 
 export default function StudentLoanRefinance() {
-  const [loanDataArray, setLoanDataArray] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
-
-  // Filter state
-  const [filters, setFilters] = useState({
-    apr: 0,
-    loanAmount: 0,
-    noOriginationFee: false,
-    noPrepaymentFee: false,
-  });
+  const [loanDataArray, setLoanDataArray] = useState<LoanData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Dynamically import studentLoanRefinance data from data.js
+    // Dynamically import StudentLoanRefinance data from data.js
     import(`../../data.js`)
       .then((dataModule) => {
-        const studentLoanRefinanceData = (dataModule as any)
-          .studentLoanRefinance;
+        const studentLoanRefinanceData = (dataModule as DataModule)
+          .StudentLoanRefinance;
         if (Array.isArray(studentLoanRefinanceData)) {
           setLoanDataArray(studentLoanRefinanceData);
         } else {
@@ -41,7 +28,7 @@ export default function StudentLoanRefinance() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error loading studentLoanRefinance data:", error);
+        console.error("Error loading StudentLoanRefinance data:", error);
         setLoanDataArray([]);
         setLoading(false);
       });
@@ -59,15 +46,15 @@ export default function StudentLoanRefinance() {
     );
   }
 
-  if (loanDataArray.length === 0) {
+  if (!loanDataArray || loanDataArray.length === 0) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
             {t("no.data.found")}
           </h1>
           <p className="text-gray-600">
-            No data found for Student Loan Refinance
+            {t("no.data.found.for")} student loan refinance
           </p>
         </div>
       </div>
@@ -75,466 +62,269 @@ export default function StudentLoanRefinance() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Breadcrumb */}
-            <div className="flex items-center space-x-2 text-sm text-gray-600">
-              <a href="/" className="hover:text-blue-600 transition-colors">
-                {t("home")}
-              </a>
-              <ChevronRight className="h-4 w-4 text-gray-400" />
-              <a href="/loan" className="hover:text-blue-600 transition-colors">
-                {t("loan")}
-              </a>
-              <ChevronRight className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-800 font-medium">
-                STUDENT LOAN REFINANCE
-              </span>
-            </div>
+    <div className="min-h-screen bg-white">
+      <Header />
 
-            {/* Filter Button and Language Toggle */}
-            <div className="flex items-center gap-4">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    {t("filter")}
-                  </Button>
-                </SheetTrigger>
-
-                {/* Language Toggle */}
-                <LanguageToggle />
-
-                <SheetContent side="left" className="w-80 p-0">
-                  <SheetHeader className="px-6 pt-6">
-                    <SheetTitle className="flex items-center justify-between">
-                      <span>{t("filter")}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          setFilters({
-                            apr: 0,
-                            loanAmount: 0,
-                            noOriginationFee: false,
-                            noPrepaymentFee: false,
-                          })
-                        }
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        {t("clear")}
-                      </Button>
-                    </SheetTitle>
-                  </SheetHeader>
-
-                  <div className="px-6 py-4 space-y-6">
-                    {/* APR Filter */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {t("apr")} (Max: {filters.apr}%)
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="250"
-                        value={filters.apr}
-                        onChange={(e) =>
-                          setFilters({
-                            ...filters,
-                            apr: Number(e.target.value),
-                          })
-                        }
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>0%</span>
-                        <span>250%</span>
-                      </div>
-                    </div>
-
-                    {/* Loan Amount Filter */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Desired Loan Amount (Max: $
-                        {filters.loanAmount.toLocaleString()})
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100000"
-                        step="1000"
-                        value={filters.loanAmount}
-                        onChange={(e) =>
-                          setFilters({
-                            ...filters,
-                            loanAmount: Number(e.target.value),
-                          })
-                        }
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>$0</span>
-                        <span>$100k</span>
-                      </div>
-                    </div>
-
-                    {/* Fee Filters */}
-                    <div className="space-y-4">
-                      <h3 className="text-sm font-medium text-gray-700">
-                        {t("fees")}
-                      </h3>
-
-                      <label className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          checked={filters.noOriginationFee}
-                          onChange={(e) =>
-                            setFilters({
-                              ...filters,
-                              noOriginationFee: e.target.checked,
-                            })
-                          }
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm">
-                          {t("no.origination.fee")}
-                        </span>
-                        <span className="text-xs text-gray-500">1</span>
-                      </label>
-
-                      <label className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          checked={filters.noPrepaymentFee}
-                          onChange={(e) =>
-                            setFilters({
-                              ...filters,
-                              noPrepaymentFee: e.target.checked,
-                            })
-                          }
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm">
-                          {t("no.prepayment.fee")}
-                        </span>
-                        <span className="text-xs text-gray-500">3</span>
-                      </label>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
+      <main className="w-full px-6 py-8">
+        {/* Language Toggle */}
+        <div className="flex justify-end mb-4">
+          <LanguageToggle />
         </div>
-      </div>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-2 mb-6">
+          <Link
+            href="/"
+            className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
+          >
+            {t("home")}
+          </Link>
+          <ChevronRight className="h-4 w-4 text-blue-400" />
+          <Link
+            href="/"
+            className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
+          >
+            {t("loan")}
+          </Link>
+          <ChevronRight className="h-4 w-4 text-blue-400" />
+          <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">
+            {t("student.loan.refinancing").toUpperCase()}
+          </span>
+        </div>
+
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Student Loan Refinance: Reviews & Comparisons
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            {t("student.loan.refinancing.title")}
           </h1>
-          <p className="text-gray-600 text-lg">
-            Looking for student loan refinance? You've come to the right place.
-            But what should you look for in student loan refinance?
+          <p className="text-gray-700">
+            {t("student.loan.refinancing.description")}
           </p>
           <div className="mt-4 text-sm text-gray-600">
             {t("showing")} {loanDataArray.length} {t("of")}{" "}
-            {loanDataArray.length} {t("results")}
+            {loanDataArray.length} {t("student.loan.refinancing.product")}
           </div>
         </div>
 
-        {/* Table Container */}
-        <div className="overflow-x-auto">
+        {/* Table Structure */}
+        <div className="w-full overflow-x-auto">
+          {/* Table Headers */}
           <div className="min-w-[1200px]">
-            {/* Header Row */}
-            <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-gray-200 bg-gray-50">
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                PRODUCT
+            <div className="grid grid-cols-6 gap-0 bg-gray-50 border-b border-gray-200">
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("product")}
               </div>
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                REVIEWS
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("reviews")}
               </div>
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                LOAN AMOUNT
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("loan.amount")}
               </div>
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                APR
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("apr")}
               </div>
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                LOAN TERM (MONTHS)
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("loan.term.months")}
               </div>
-              <div className="font-bold text-gray-700 text-sm uppercase tracking-wide">
-                ADDITIONAL DETAILS
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("additional.details")}
               </div>
             </div>
+          </div>
 
-            {/* Table Rows */}
-            {(() => {
-              const filteredLoans = loanDataArray.filter((loan) => {
-                // Filter by APR slider - show loans with max APR less than slider value
-                const aprFilter =
-                  !filters.apr || loan.apr?.maxValue <= filters.apr;
-
-                // Filter by Loan Amount slider - show loans with max amount less than slider value
-                const loanAmountFilter =
-                  !filters.loanAmount ||
-                  loan.loanAmount?.maxValue <= filters.loanAmount;
-
-                // Filter by checkboxes
-                const noOriginationFeeFilter =
-                  !filters.noOriginationFee ||
-                  loan.additional?.some((feature: any) =>
-                    feature.item.toLowerCase().includes("origination fee")
-                  );
-
-                const noPrepaymentFeeFilter =
-                  !filters.noPrepaymentFee ||
-                  loan.additional?.some((feature: any) =>
-                    feature.item.toLowerCase().includes("prepayment fee")
-                  );
-
-                return (
-                  aprFilter &&
-                  loanAmountFilter &&
-                  noOriginationFeeFilter &&
-                  noPrepaymentFeeFilter
-                );
-              });
-
-              if (filteredLoans.length === 0) {
-                return (
-                  <div className="text-center py-12">
-                    <div className="text-gray-500 text-lg mb-2">
-                      {t("no.loans.match.filters")}
-                    </div>
-                    <div className="text-gray-400 text-sm">
-                      {t("try.adjusting.filters")}
-                    </div>
-                  </div>
-                );
-              }
-
-              return filteredLoans.map((loan, index) => (
+          {/* Table Rows */}
+          <div className="w-full overflow-x-auto">
+            <div className="min-w-[1200px] divide-y divide-gray-100">
+              {loanDataArray.map((loan, index) => (
                 <div
                   key={loan.id || index}
-                  className="grid grid-cols-6 gap-4 py-4 border-b border-gray-100"
+                  className="grid grid-cols-6 gap-0 items-start bg-white hover:bg-gray-50 transition py-6"
                 >
-                  {/* PRODUCT */}
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={loan.image}
-                        alt={loan.reviews?.head || "Loan"}
-                        className="h-16 w-16 object-contain bg-gray-50 rounded"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-blue-400 text-base mb-2">
-                        {loan.reviews?.head || t("n.a")}
+                  {/* Product */}
+                  <div className="flex items-start gap-4 py-4 px-6">
+                    <Image
+                      src={loan.image}
+                      alt={
+                        loan.reviews?.head ||
+                        t("student.loan.refinancing.product")
+                      }
+                      width={48}
+                      height={48}
+                      className="object-contain bg-gray-100 rounded flex-shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <div className="font-semibold text-blue-600 text-base truncate">
+                        {loan.reviews?.head || "Unknown"}
                       </div>
                     </div>
                   </div>
 
-                  {/* REVIEWS */}
-                  <div>
-                    <div
-                      className={`text-sm font-medium mb-2 ${
-                        loan.reviews &&
-                        (loan.reviews.green || loan.reviews.pink)
-                          ? "text-gray-800"
-                          : "text-green-600"
-                      }`}
-                    >
-                      {loan.reviews && (loan.reviews.green || loan.reviews.pink)
-                        ? loan.reviews?.recommendation || t("recommended")
-                        : t("rating.not.yet.determined")}
+                  {/* Reviews */}
+                  <div className="py-4 px-6">
+                    <div className="text-green-600 font-medium text-sm mb-3">
+                      {loan.reviews?.head2 || t("recommended")}
                     </div>
                     {loan.reviews &&
-                    (loan.reviews.green || loan.reviews.pink) ? (
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden flex">
-                          {loan.reviews.green && (
-                            <div
-                              className="h-full bg-green-500"
-                              style={{
-                                width: `${
-                                  (loan.reviews.green /
-                                    (loan.reviews.green +
-                                      (loan.reviews.pink || 0))) *
-                                  100
-                                }%`,
-                              }}
-                            />
-                          )}
-                          {loan.reviews.pink && (
-                            <div
-                              className="h-full bg-red-500"
-                              style={{
-                                width: `${
-                                  (loan.reviews.pink /
-                                    (loan.reviews.green + loan.reviews.pink)) *
-                                  100
-                                }%`,
-                              }}
-                            />
-                          )}
+                      (loan.reviews.green || loan.reviews.pink) && (
+                        <div>
+                          <div className="flex items-center gap-4 mb-3">
+                            <div className="flex-1">
+                              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden flex">
+                                {loan.reviews.green && (
+                                  <div
+                                    className="h-full bg-green-500"
+                                    style={{
+                                      width: `${
+                                        (Number(loan.reviews.green) /
+                                          (Number(loan.reviews.green) +
+                                            (Number(loan.reviews.pink) || 0))) *
+                                        100
+                                      }%`,
+                                    }}
+                                  />
+                                )}
+                                {loan.reviews.pink && (
+                                  <div
+                                    className="h-full bg-pink-500"
+                                    style={{
+                                      width: `${
+                                        (Number(loan.reviews.pink) /
+                                          (Number(loan.reviews.green) +
+                                            Number(loan.reviews.pink))) *
+                                        100
+                                      }%`,
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-3 text-sm">
+                              {loan.reviews.green && (
+                                <span className="text-green-600 font-medium">
+                                  {loan.reviews.green}
+                                </span>
+                              )}
+                              {loan.reviews.pink && (
+                                <span className="text-pink-600 font-medium">
+                                  {loan.reviews.pink}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-blue-600 text-sm cursor-pointer hover:underline">
+                            {t("view.reviews")} {loan.reviews.review || 6}{" "}
+                            {t("reviews.count")}
+                          </div>
                         </div>
-                        <div className="flex gap-2 text-xs">
-                          {loan.reviews.green && (
-                            <span className="text-green-600 font-medium">
-                              {loan.reviews.green}
-                            </span>
-                          )}
-                          {loan.reviews.pink && (
-                            <span className="text-red-600 font-medium">
-                              {loan.reviews.pink}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="flex gap-1">
-                          <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
-                          <div className="w-3 h-3 bg-pink-500 rounded-sm"></div>
-                        </div>
-                        <span className="text-red-600 font-medium text-xs">
-                          00
-                        </span>
-                      </div>
-                    )}
-                    <button className="text-blue-600 text-xs hover:text-blue-800">
-                      {t("view.reviews")}
-                    </button>
+                      )}
                   </div>
 
-                  {/* LOAN AMOUNT */}
-                  <div>
-                    <div className="text-sm font-medium text-gray-800 mb-2">
-                      ${loan.loanAmount?.minValue?.toLocaleString() || t("n.a")}{" "}
-                      - $
-                      {loan.loanAmount?.maxValue?.toLocaleString() || t("n.a")}
+                  {/* Loan Amount */}
+                  <div className="py-4 px-6">
+                    <div className="font-bold text-gray-800 text-lg mb-3">
+                      {loan.loanAmount?.minValue && loan.loanAmount?.maxValue
+                        ? `$${loan.loanAmount.minValue.toLocaleString()}k - $${loan.loanAmount.maxValue.toLocaleString()}k`
+                        : t("n.a")}
                     </div>
                     <div className="relative">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="bg-blue-500 h-2 rounded-full"
+                          className="h-full bg-blue-500 rounded-full"
                           style={{
-                            width: `${
-                              (((loan.loanAmount?.maxValue || 500000) -
-                                (loan.loanAmount?.minValue || 25)) /
-                                (500000 - 25)) *
+                            width: `${Math.min(
+                              ((Number(loan.loanAmount?.maxValue) || 0) /
+                                (Number(loan.loanAmount?.max) || 100000)) *
+                                100,
                               100
-                            }%`,
-                            marginLeft: `${
-                              (((loan.loanAmount?.minValue || 25) - 25) /
-                                (500000 - 25)) *
-                              100
-                            }%`,
+                            )}%`,
                           }}
                         />
                       </div>
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>$25</span>
-                        <span>$500k</span>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>${loan.loanAmount?.min || "3"}k</span>
+                        <span>${loan.loanAmount?.max || "2000"}k</span>
                       </div>
                     </div>
                   </div>
 
                   {/* APR */}
-                  <div>
-                    <div className="text-sm font-medium text-gray-800 mb-2">
-                      {loan.apr?.minValue || t("n.a")}% -{" "}
-                      {loan.apr?.maxValue || t("n.a")}%
+                  <div className="py-4 px-6">
+                    <div className="font-bold text-gray-800 text-lg mb-3">
+                      {loan.apr?.minValue && loan.apr?.maxValue
+                        ? `${loan.apr.minValue}% - ${loan.apr.maxValue}%`
+                        : t("n.a")}
                     </div>
                     <div className="relative">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="bg-blue-500 h-2 rounded-full"
+                          className="h-full bg-blue-500 rounded-full"
                           style={{
-                            width: `${
-                              (((loan.apr?.maxValue || 100) -
-                                (loan.apr?.minValue || 0)) /
-                                (100 - 0)) *
+                            width: `${Math.min(
+                              ((Number(loan.apr?.maxValue) || 0) /
+                                (Number(loan.apr?.max) || 10)) *
+                                100,
                               100
-                            }%`,
-                            marginLeft: `${
-                              (((loan.apr?.minValue || 0) - 0) / (100 - 0)) *
-                              100
-                            }%`,
+                            )}%`,
                           }}
                         />
                       </div>
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>0%</span>
-                        <span>100%</span>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>{loan.apr?.min || "1"}%</span>
+                        <span>{loan.apr?.max || "10"}%</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* LOAN TERM (MONTHS) */}
-                  <div>
-                    <div className="text-sm font-medium text-gray-800 mb-2">
-                      {loan.loanTerm?.minValue || t("n.a")} -{" "}
-                      {loan.loanTerm?.maxValue || t("n.a")}
+                  {/* Loan Term */}
+                  <div className="py-4 px-6">
+                    <div className="font-bold text-gray-800 text-lg mb-3">
+                      {loan.loanTerm?.minValue && loan.loanTerm?.maxValue
+                        ? `${loan.loanTerm.minValue} - ${loan.loanTerm.maxValue}`
+                        : t("n.a")}
                     </div>
                     <div className="relative">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="bg-blue-500 h-2 rounded-full"
+                          className="h-full bg-blue-500 rounded-full"
                           style={{
-                            width: `${
-                              (((loan.loanTerm?.maxValue || 360) -
-                                (loan.loanTerm?.minValue || 1)) /
-                                (360 - 1)) *
+                            width: `${Math.min(
+                              ((Number(loan.loanTerm?.maxValue) || 0) /
+                                (Number(loan.loanTerm?.max) || 60)) *
+                                100,
                               100
-                            }%`,
-                            marginLeft: `${
-                              (((loan.loanTerm?.minValue || 1) - 1) /
-                                (360 - 1)) *
-                              100
-                            }%`,
+                            )}%`,
                           }}
                         />
                       </div>
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>1</span>
-                        <span>360</span>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>{loan.loanTerm?.min || "1"}</span>
+                        <span>{loan.loanTerm?.max || "60"}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* ADDITIONAL DETAILS */}
-                  <div>
-                    {loan.additional && loan.additional.length > 0 ? (
-                      <div className="space-y-1">
-                        {loan.additional
-                          .slice(0, 2)
-                          .map((feature: any, idx: number) => (
-                            <div key={idx} className="flex items-center gap-2">
-                              <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                                <div className="w-1.5 h-1.5 bg-white rounded-full" />
-                              </div>
-                              <span className="text-xs text-gray-700">
-                                {feature.item}
-                              </span>
-                            </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <div className="text-xs text-gray-400">
-                        No additional details
-                      </div>
-                    )}
+                  {/* Additional Details */}
+                  <div className="py-4 px-6">
+                    <div className="space-y-2">
+                      {loan.additional && loan.additional.length > 0 ? (
+                        loan.additional.map((feature, idx: number) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <span className="text-blue-500 text-sm">✔</span>
+                            <span className="text-gray-700 text-sm">
+                              {feature.item}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-gray-400 text-sm">
+                          {t("no.additional.features")}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              ));
-            })()}
+              ))}
+            </div>
           </div>
         </div>
       </main>

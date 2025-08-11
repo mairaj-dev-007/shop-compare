@@ -2,20 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/ui/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/ui/LanguageToggle";
+import { MortgageData, DataModule } from "@/types/mortgage";
 
 export default function HomeEquityLoan() {
   const { t } = useLanguage();
-  const [mortgageDataArray, setMortgageDataArray] = useState<any[]>([]);
+  const [mortgageDataArray, setMortgageDataArray] = useState<MortgageData[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Dynamically import homeEquityLoan data from data.js
     import(`../../data.js`)
       .then((dataModule) => {
-        const homeEquityLoanData = (dataModule as any).homeEquityLoan;
+        const homeEquityLoanData = (dataModule as DataModule).homeEquityLoan;
         if (Array.isArray(homeEquityLoanData)) {
           setMortgageDataArray(homeEquityLoanData);
         } else {
@@ -69,19 +74,19 @@ export default function HomeEquityLoan() {
 
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("home")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("mortgage")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
           <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">
             {t("home.equity.loans").toUpperCase()}
@@ -104,7 +109,7 @@ export default function HomeEquityLoan() {
         <div className="w-full overflow-x-auto">
           {/* Table Headers */}
           <div className="min-w-[1200px]">
-            <div className="grid grid-cols-7 gap-0 bg-gray-50 border-b border-gray-200">
+            <div className="grid grid-cols-6 gap-0 bg-gray-50 border-b border-gray-200">
               <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
                 {t("product")}
               </div>
@@ -123,9 +128,6 @@ export default function HomeEquityLoan() {
               <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
                 {t("maximum.ltv")}
               </div>
-              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
-                {t("additional.details")}
-              </div>
             </div>
           </div>
 
@@ -135,14 +137,16 @@ export default function HomeEquityLoan() {
               {mortgageDataArray.map((mortgage, index) => (
                 <div
                   key={mortgage.id || index}
-                  className="grid grid-cols-7 gap-0 items-start bg-white hover:bg-gray-50 transition py-6"
+                  className="grid grid-cols-6 gap-0 items-start bg-white hover:bg-gray-50 transition py-6"
                 >
                   {/* Product */}
                   <div className="flex items-start gap-4 py-4 px-6">
-                    <img
+                    <Image
                       src={mortgage.image}
                       alt={mortgage.reviews?.head || t("home.equity.loan")}
-                      className="h-12 w-12 object-contain bg-gray-100 rounded flex-shrink-0"
+                      width={48}
+                      height={48}
+                      className="object-contain bg-gray-100 rounded flex-shrink-0"
                     />
                     <div className="min-w-0">
                       <div className="font-semibold text-blue-600 text-base truncate">
@@ -162,45 +166,50 @@ export default function HomeEquityLoan() {
                           <div className="flex items-center gap-4 mb-3">
                             <div className="flex-1">
                               <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden flex">
-                                {mortgage.reviews.green && (
-                                  <div
-                                    className="h-full bg-green-500"
-                                    style={{
-                                      width: `${
-                                        (mortgage.reviews.green /
-                                          (mortgage.reviews.green +
-                                            (mortgage.reviews.pink || 0))) *
-                                        100
-                                      }%`,
-                                    }}
-                                  />
-                                )}
-                                {mortgage.reviews.pink && (
-                                  <div
-                                    className="h-full bg-pink-500"
-                                    style={{
-                                      width: `${
-                                        (mortgage.reviews.pink /
-                                          (mortgage.reviews.green +
-                                            mortgage.reviews.pink)) *
-                                        100
-                                      }%`,
-                                    }}
-                                  />
-                                )}
+                                {mortgage.reviews.green &&
+                                  typeof mortgage.reviews.green ===
+                                    "number" && (
+                                    <div
+                                      className="h-full bg-green-500"
+                                      style={{
+                                        width: `${
+                                          (Number(mortgage.reviews.green) /
+                                            (Number(mortgage.reviews.green) +
+                                              (Number(mortgage.reviews.pink) || 0))) *
+                                          100
+                                        }%`,
+                                      }}
+                                    />
+                                  )}
+                                {mortgage.reviews.pink &&
+                                  typeof mortgage.reviews.pink === "number" && (
+                                    <div
+                                      className="h-full bg-pink-500"
+                                      style={{
+                                        width: `${
+                                          (Number(mortgage.reviews.pink) /
+                                            (Number(mortgage.reviews.green) +
+                                              Number(mortgage.reviews.pink))) *
+                                          100
+                                        }%`,
+                                      }}
+                                    />
+                                  )}
                               </div>
                             </div>
                             <div className="flex gap-3 text-sm">
-                              {mortgage.reviews.green && (
-                                <span className="text-green-600 font-medium">
-                                  {mortgage.reviews.green}
-                                </span>
-                              )}
-                              {mortgage.reviews.pink && (
-                                <span className="text-pink-600 font-medium">
-                                  {mortgage.reviews.pink}
-                                </span>
-                              )}
+                              {mortgage.reviews.green &&
+                                typeof mortgage.reviews.green === "number" && (
+                                  <span className="text-green-600 font-medium">
+                                    {mortgage.reviews.green}
+                                  </span>
+                                )}
+                              {mortgage.reviews.pink &&
+                                typeof mortgage.reviews.pink === "number" && (
+                                  <span className="text-pink-600 font-medium">
+                                    {mortgage.reviews.pink}
+                                  </span>
+                                )}
                             </div>
                           </div>
                           <div className="text-blue-600 text-sm cursor-pointer hover:underline">
@@ -216,7 +225,11 @@ export default function HomeEquityLoan() {
                     <div className="font-bold text-gray-800 text-lg mb-3">
                       {mortgage.loanAmount?.minValue &&
                       mortgage.loanAmount?.maxValue
-                        ? `$${mortgage.loanAmount.minValue.toLocaleString()}k - $${mortgage.loanAmount.maxValue.toLocaleString()}k`
+                        ? `$${parseInt(
+                            mortgage.loanAmount.minValue
+                          ).toLocaleString()}k - $${parseInt(
+                            mortgage.loanAmount.maxValue
+                          ).toLocaleString()}k`
                         : t("n.a")}
                     </div>
                     <div className="relative">
@@ -225,8 +238,12 @@ export default function HomeEquityLoan() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.loanAmount?.maxValue || 0) /
-                                (mortgage.loanAmount?.max || 100000)) *
+                              (parseFloat(
+                                mortgage.loanAmount?.maxValue || "0"
+                              ) /
+                                parseFloat(
+                                  mortgage.loanAmount?.max || "100000"
+                                )) *
                                 100,
                               100
                             )}%`,
@@ -253,8 +270,8 @@ export default function HomeEquityLoan() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.apr?.maxValue || 0) /
-                                (mortgage.apr?.max || 18)) *
+                              (parseFloat(mortgage.apr?.maxValue || "0") /
+                                parseFloat(mortgage.apr?.max || "10")) *
                                 100,
                               100
                             )}%`,
@@ -262,8 +279,8 @@ export default function HomeEquityLoan() {
                         />
                       </div>
                       <div className="flex justify-between text-xs text-gray-500 mt-2">
-                        <span>{mortgage.apr?.min || "0"}%</span>
-                        <span>{mortgage.apr?.max || "18"}%</span>
+                        <span>{mortgage.apr?.min || "1"}%</span>
+                        <span>{mortgage.apr?.max || "10"}%</span>
                       </div>
                     </div>
                   </div>
@@ -282,8 +299,8 @@ export default function HomeEquityLoan() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.loanTerm?.maxValue || 0) /
-                                (mortgage.loanTerm?.max || 60)) *
+                              (parseFloat(mortgage.loanTerm?.maxValue || "0") /
+                                parseFloat(mortgage.loanTerm?.max || "60")) *
                                 100,
                               100
                             )}%`,
@@ -297,32 +314,12 @@ export default function HomeEquityLoan() {
                     </div>
                   </div>
 
-                  {/* Maximum LTV */}
+                  {/* Max LTV */}
                   <div className="py-4 px-6">
                     <div className="font-bold text-gray-800 text-lg mb-3">
                       {mortgage.maxLtv
                         ? `${mortgage.maxLtv}% Maximum LTV`
                         : t("n.a")}
-                    </div>
-                  </div>
-
-                  {/* Additional Details */}
-                  <div className="py-4 px-6">
-                    <div className="space-y-2">
-                      {mortgage.additional && mortgage.additional.length > 0 ? (
-                        mortgage.additional.map((feature: any, idx: number) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <span className="text-blue-500 text-sm">✔</span>
-                            <span className="text-gray-700 text-sm">
-                              {feature.item}
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-gray-400 text-sm">
-                          {t("no.additional.features")}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

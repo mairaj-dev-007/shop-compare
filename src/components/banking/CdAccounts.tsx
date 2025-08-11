@@ -57,13 +57,13 @@ export default function CdAccounts() {
     );
   }
 
-      return (
-      <div className="min-h-screen bg-white">
-        <Header />
-        {/* Language Toggle */}
-        <div className="absolute top-4 right-4 z-50">
-          <LanguageToggle />
-        </div>
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      {/* Language Toggle */}
+      <div className="absolute top-4 right-4 z-50">
+        <LanguageToggle />
+      </div>
 
       {/* Main Content */}
       <main className="w-full px-6 py-8">
@@ -93,9 +93,7 @@ export default function CdAccounts() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             {t("cd.accounts.title")}
           </h1>
-          <p className="text-gray-700">
-            {t("cd.accounts.description")}
-          </p>
+          <p className="text-gray-700">{t("cd.accounts.description")}</p>
           <div className="mt-4 text-sm text-gray-600">
             {t("showing")} {bankingDataArray.length} {t("of")}{" "}
             {bankingDataArray.length} {t("cd.accounts")}
@@ -149,9 +147,9 @@ export default function CdAccounts() {
                             className="h-full bg-green-500"
                             style={{
                               width: `${
-                                (item.reviews.green /
-                                  (item.reviews.green +
-                                    (item.reviews.pink || 0))) *
+                                (Number(item.reviews.green) /
+                                  (Number(item.reviews.green) +
+                                    (Number(item.reviews.pink) || 0))) *
                                 100
                               }%`,
                             }}
@@ -162,8 +160,9 @@ export default function CdAccounts() {
                             className="h-full bg-pink-500"
                             style={{
                               width: `${
-                                (item.reviews.pink /
-                                  (item.reviews.green + item.reviews.pink)) *
+                                (Number(item.reviews.pink) /
+                                  (Number(item.reviews.green) +
+                                    Number(item.reviews.pink))) *
                                 100
                               }%`,
                             }}

@@ -342,9 +342,9 @@ export default function BusinessLoan() {
                             className="h-full bg-green-500"
                             style={{
                               width: `${
-                                (loan.reviews.green /
-                                  (loan.reviews.green +
-                                    (loan.reviews.pink || 0))) *
+                                (Number(loan.reviews.green) /
+                                  (Number(loan.reviews.green) +
+                                    (Number(loan.reviews.pink) || 0))) *
                                 100
                               }%`,
                             }}
@@ -355,8 +355,8 @@ export default function BusinessLoan() {
                             className="h-full bg-red-500"
                             style={{
                               width: `${
-                                (loan.reviews.pink /
-                                  (loan.reviews.green + loan.reviews.pink)) *
+                                (Number(loan.reviews.pink) /
+                                  (Number(loan.reviews.green) + Number(loan.reviews.pink))) *
                                 100
                               }%`,
                             }}

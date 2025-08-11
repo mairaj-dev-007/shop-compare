@@ -163,9 +163,9 @@ export default function PrepaidCard() {
                                     className="h-full bg-green-500"
                                     style={{
                                       width: `${
-                                        (creditCard.reviews.green /
-                                          (creditCard.reviews.green +
-                                            (creditCard.reviews.pink || 0))) *
+                                        (Number(creditCard.reviews.green) /
+                                          (Number(creditCard.reviews.green) +
+                                            (Number(creditCard.reviews.pink) || 0))) *
                                         100
                                       }%`,
                                     }}
@@ -176,9 +176,9 @@ export default function PrepaidCard() {
                                     className="h-full bg-pink-500"
                                     style={{
                                       width: `${
-                                        (creditCard.reviews.pink /
-                                          (creditCard.reviews.green +
-                                            creditCard.reviews.pink)) *
+                                        (Number(creditCard.reviews.pink) /
+                                          (Number(creditCard.reviews.green) +
+                                            Number(creditCard.reviews.pink))) *
                                         100
                                       }%`,
                                     }}

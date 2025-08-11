@@ -2,20 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/ui/Header";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/ui/LanguageToggle";
+import { MortgageData, DataModule } from "@/types/mortgage";
 
 export default function MortgageRefinance() {
   const { t } = useLanguage();
-  const [mortgageDataArray, setMortgageDataArray] = useState<any[]>([]);
+  const [mortgageDataArray, setMortgageDataArray] = useState<MortgageData[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Dynamically import mortgageRefinance data from data.js
     import(`../../data.js`)
       .then((dataModule) => {
-        const mortgageRefinanceData = (dataModule as any).mortgageRefinance;
+        const mortgageRefinanceData = (dataModule as DataModule)
+          .mortgageRefinance;
         if (Array.isArray(mortgageRefinanceData)) {
           setMortgageDataArray(mortgageRefinanceData);
         } else {
@@ -69,19 +75,19 @@ export default function MortgageRefinance() {
 
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("home")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
-          <a
+          <Link
             href="/"
             className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-xs font-medium hover:bg-blue-200 transition-colors cursor-pointer"
           >
             {t("mortgage")}
-          </a>
+          </Link>
           <ChevronRight className="h-4 w-4 text-blue-400" />
           <span className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium">
             {t("mortgage.refinance").toUpperCase()}
@@ -104,7 +110,7 @@ export default function MortgageRefinance() {
         <div className="w-full overflow-x-auto">
           {/* Table Headers */}
           <div className="min-w-[1200px]">
-            <div className="grid grid-cols-5 gap-0 bg-gray-50 border-b border-gray-200">
+            <div className="grid grid-cols-6 gap-0 bg-gray-50 border-b border-gray-200">
               <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
                 {t("product")}
               </div>
@@ -118,6 +124,9 @@ export default function MortgageRefinance() {
                 {t("loan.term.years")}
               </div>
               <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
+                {t("credit.score")}
+              </div>
+              <div className="py-3 px-6 font-bold text-gray-700 text-sm uppercase tracking-wide">
                 {t("additional.details")}
               </div>
             </div>
@@ -129,17 +138,19 @@ export default function MortgageRefinance() {
               {mortgageDataArray.map((mortgage, index) => (
                 <div
                   key={mortgage.id || index}
-                  className="grid grid-cols-5 gap-0 items-start bg-white hover:bg-gray-50 transition py-6"
+                  className="grid grid-cols-6 gap-0 items-start bg-white hover:bg-gray-50 transition py-6"
                 >
                   {/* Product */}
                   <div className="flex items-start gap-4 py-4 px-6">
-                    <img
+                    <Image
                       src={mortgage.image}
                       alt={
                         mortgage.reviews?.head ||
                         t("mortgage.refinance.product")
                       }
-                      className="h-12 w-12 object-contain bg-gray-100 rounded flex-shrink-0"
+                      width={48}
+                      height={48}
+                      className="object-contain bg-gray-100 rounded flex-shrink-0"
                     />
                     <div className="min-w-0">
                       <div className="font-semibold text-blue-600 text-base truncate">
@@ -164,9 +175,10 @@ export default function MortgageRefinance() {
                                     className="h-full bg-green-500"
                                     style={{
                                       width: `${
-                                        (mortgage.reviews.green /
-                                          (mortgage.reviews.green +
-                                            (mortgage.reviews.pink || 0))) *
+                                        (Number(mortgage.reviews.green) /
+                                          (Number(mortgage.reviews.green) +
+                                            (Number(mortgage.reviews.pink) ||
+                                              0))) *
                                         100
                                       }%`,
                                     }}
@@ -177,9 +189,9 @@ export default function MortgageRefinance() {
                                     className="h-full bg-pink-500"
                                     style={{
                                       width: `${
-                                        (mortgage.reviews.pink /
-                                          (mortgage.reviews.green +
-                                            mortgage.reviews.pink)) *
+                                        (Number(mortgage.reviews.pink) /
+                                          (Number(mortgage.reviews.green) +
+                                            Number(mortgage.reviews.pink))) *
                                         100
                                       }%`,
                                     }}
@@ -211,41 +223,30 @@ export default function MortgageRefinance() {
                   {/* Loan Amount */}
                   <div className="py-4 px-6">
                     <div className="font-bold text-gray-800 text-lg mb-3">
-                      {mortgage.loanAmount?.maximumLoanAmount
-                        ? mortgage.loanAmount.maximumLoanAmount
-                        : mortgage.loanAmount?.minValue &&
-                          mortgage.loanAmount?.maxValue
+                      {mortgage.loanAmount?.minValue &&
+                      mortgage.loanAmount?.maxValue
                         ? `$${mortgage.loanAmount.minValue.toLocaleString()}k - $${mortgage.loanAmount.maxValue.toLocaleString()}k`
                         : t("n.a")}
                     </div>
-                    {mortgage.loanAmount?.maximumLoanAmount && (
-                      <div className="text-sm text-gray-600">
-                        Maximum Loan Amount
+                    <div className="relative">
+                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-blue-500 rounded-full"
+                          style={{
+                            width: `${Math.min(
+                              ((Number(mortgage.loanAmount?.maxValue) || 0) /
+                                (Number(mortgage.loanAmount?.max) || 100000)) *
+                                100,
+                              100
+                            )}%`,
+                          }}
+                        />
                       </div>
-                    )}
-                    {!mortgage.loanAmount?.maximumLoanAmount &&
-                      mortgage.loanAmount?.minValue &&
-                      mortgage.loanAmount?.maxValue && (
-                        <div className="relative">
-                          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-blue-500 rounded-full"
-                              style={{
-                                width: `${Math.min(
-                                  ((mortgage.loanAmount?.maxValue || 0) /
-                                    (mortgage.loanAmount?.max || 100000)) *
-                                    100,
-                                  100
-                                )}%`,
-                              }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-500 mt-2">
-                            <span>${mortgage.loanAmount?.min || "0"}</span>
-                            <span>${mortgage.loanAmount?.max || "6000"}k</span>
-                          </div>
-                        </div>
-                      )}
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>${mortgage.loanAmount?.min || "3"}k</span>
+                        <span>${mortgage.loanAmount?.max || "2000"}k</span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Loan Term */}
@@ -262,8 +263,8 @@ export default function MortgageRefinance() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((mortgage.loanTerm?.maxValue || 0) /
-                                (mortgage.loanTerm?.max || 40)) *
+                              ((Number(mortgage.loanTerm?.maxValue) || 0) /
+                                (Number(mortgage.loanTerm?.max) || 60)) *
                                 100,
                               100
                             )}%`,
@@ -271,32 +272,55 @@ export default function MortgageRefinance() {
                         />
                       </div>
                       <div className="flex justify-between text-xs text-gray-500 mt-2">
-                        <span>{mortgage.loanTerm?.min || "3"}</span>
-                        <span>{mortgage.loanTerm?.max || "40"}</span>
+                        <span>{mortgage.loanTerm?.min || "1"}</span>
+                        <span>{mortgage.loanTerm?.max || "60"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Credit Score */}
+                  <div className="py-4 px-6">
+                    <div className="font-bold text-gray-800 text-lg mb-3">
+                      {mortgage.creditScore?.minValue &&
+                      mortgage.creditScore?.maxValue
+                        ? `${mortgage.creditScore.minValue} - ${mortgage.creditScore.maxValue}`
+                        : t("n.a")}
+                    </div>
+                    <div className="relative">
+                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-blue-500 rounded-full"
+                          style={{
+                            width: `${Math.min(
+                              ((Number(mortgage.creditScore?.maxValue) || 0) /
+                                (Number(mortgage.creditScore?.max) || 800)) *
+                                100,
+                              100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>{mortgage.creditScore?.min || "600"}</span>
+                        <span>{mortgage.creditScore?.max || "800"}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Additional Details */}
                   <div className="py-4 px-6">
-                    <div className="font-bold text-gray-800 text-lg mb-3">
-                      {t("additional.details")}
-                    </div>
                     <div className="space-y-2">
                       {mortgage.additional && mortgage.additional.length > 0 ? (
-                        mortgage.additional.map(
-                          (detail: any, index: number) => (
-                            <div
-                              key={index}
-                              className="flex items-center text-sm text-gray-700"
-                            >
-                              <span className="text-green-500 mr-2">✔</span>
-                              {detail.item}
-                            </div>
-                          )
-                        )
+                        mortgage.additional.map((feature, idx: number) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <span className="text-blue-500 text-sm">✔</span>
+                            <span className="text-gray-700 text-sm">
+                              {feature.item}
+                            </span>
+                          </div>
+                        ))
                       ) : (
-                        <div className="text-sm text-gray-500">
+                        <div className="text-gray-400 text-sm">
                           {t("no.additional.features")}
                         </div>
                       )}

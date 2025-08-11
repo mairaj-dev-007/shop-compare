@@ -1,16 +1,13 @@
 "use client";
 
+import React from "react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface MortgageComponent {
-  (): JSX.Element;
-}
 
 export default function MortgagePage() {
   const params = useParams();
   const [mortgageType, setMortgageType] = useState<string>("");
-  const [Component, setComponent] = useState<MortgageComponent | null>(null);
+  const [Component, setComponent] = useState<React.ComponentType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
