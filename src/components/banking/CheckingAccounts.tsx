@@ -17,7 +17,8 @@ export default function CheckingAccounts() {
   useEffect(() => {
     import(`../../data.js`)
       .then((dataModule) => {
-        const checkingAccountsData = (dataModule as DataModule).checkingAccounts;
+        const checkingAccountsData = (dataModule as DataModule)
+          .checkingAccounts;
         if (Array.isArray(checkingAccountsData)) {
           setBankingDataArray(checkingAccountsData);
         } else {
@@ -36,7 +37,9 @@ export default function CheckingAccounts() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">{t("loading")}</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            {t("loading")}
+          </h1>
         </div>
       </div>
     );
@@ -89,9 +92,7 @@ export default function CheckingAccounts() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             {t("checking.accounts.title")}
           </h1>
-          <p className="text-gray-700">
-            {t("checking.accounts.description")}
-          </p>
+          <p className="text-gray-700">{t("checking.accounts.description")}</p>
           <div className="mt-4 text-sm text-gray-600">
             {t("showing")} {bankingDataArray.length} {t("of")}{" "}
             {bankingDataArray.length} {t("checking.account")}
@@ -164,7 +165,8 @@ export default function CheckingAccounts() {
                                       width: `${
                                         (Number(banking.reviews.green) /
                                           (Number(banking.reviews.green) +
-                                            (Number(banking.reviews.pink) || 0))) *
+                                            (Number(banking.reviews.pink) ||
+                                              0))) *
                                         100
                                       }%`,
                                     }}
@@ -209,8 +211,7 @@ export default function CheckingAccounts() {
                   {/* APY */}
                   <div className="py-4 px-6">
                     <div className="font-bold text-gray-800 text-lg mb-3">
-                      {banking.apy?.minValue &&
-                      banking.apy?.maxValue
+                      {banking.apy?.minValue && banking.apy?.maxValue
                         ? `${banking.apy.minValue}% - ${banking.apy.maxValue}%`
                         : t("n.a")}
                     </div>
@@ -220,8 +221,8 @@ export default function CheckingAccounts() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((parseFloat(banking.apy?.maxValue || "0")) /
-                                (parseFloat(banking.apy?.max || "5"))) *
+                              (parseFloat(banking.apy?.maxValue || "0") /
+                                parseFloat(banking.apy?.max || "5")) *
                                 100,
                               100
                             )}%`,
@@ -249,8 +250,8 @@ export default function CheckingAccounts() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((parseFloat(banking.monthlyFee?.maxValue || "0")) /
-                                (parseFloat(banking.monthlyFee?.max || "25"))) *
+                              (parseFloat(banking.monthlyFee?.maxValue || "0") /
+                                parseFloat(banking.monthlyFee?.max || "25")) *
                                 100,
                               100
                             )}%`,
@@ -269,7 +270,11 @@ export default function CheckingAccounts() {
                     <div className="font-bold text-gray-800 text-lg mb-3">
                       {banking.minimumBalance?.minValue &&
                       banking.minimumBalance?.maxValue
-                        ? `$${parseInt(banking.minimumBalance.minValue).toLocaleString()} - $${parseInt(banking.minimumBalance.maxValue).toLocaleString()}`
+                        ? `$${parseInt(
+                            banking.minimumBalance.minValue
+                          ).toLocaleString()} - $${parseInt(
+                            banking.minimumBalance.maxValue
+                          ).toLocaleString()}`
                         : t("n.a")}
                     </div>
                     <div className="relative">
@@ -278,8 +283,12 @@ export default function CheckingAccounts() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((parseFloat(banking.minimumBalance?.maxValue || "0")) /
-                                (parseFloat(banking.minimumBalance?.max || "5000"))) *
+                              (parseFloat(
+                                banking.minimumBalance?.maxValue || "0"
+                              ) /
+                                parseFloat(
+                                  banking.minimumBalance?.max || "5000"
+                                )) *
                                 100,
                               100
                             )}%`,
@@ -298,7 +307,11 @@ export default function CheckingAccounts() {
                     <div className="font-bold text-gray-800 text-lg mb-3">
                       {banking.minimumDeposit?.minValue &&
                       banking.minimumDeposit?.maxValue
-                        ? `$${parseInt(banking.minimumDeposit.minValue).toLocaleString()} - $${parseInt(banking.minimumDeposit.maxValue).toLocaleString()}`
+                        ? `$${parseInt(
+                            banking.minimumDeposit.minValue
+                          ).toLocaleString()} - $${parseInt(
+                            banking.minimumDeposit.maxValue
+                          ).toLocaleString()}`
                         : t("n.a")}
                     </div>
                     <div className="relative">
@@ -307,8 +320,12 @@ export default function CheckingAccounts() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((parseFloat(banking.minimumDeposit?.maxValue || "0")) /
-                                (parseFloat(banking.minimumDeposit?.max || "10000"))) *
+                              (parseFloat(
+                                banking.minimumDeposit?.maxValue || "0"
+                              ) /
+                                parseFloat(
+                                  banking.minimumDeposit?.max || "10000"
+                                )) *
                                 100,
                               100
                             )}%`,

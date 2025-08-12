@@ -175,7 +175,8 @@ export default function HomeEquityLoan() {
                                         width: `${
                                           (Number(mortgage.reviews.green) /
                                             (Number(mortgage.reviews.green) +
-                                              (Number(mortgage.reviews.pink) || 0))) *
+                                              (Number(mortgage.reviews.pink) ||
+                                                0))) *
                                           100
                                         }%`,
                                       }}

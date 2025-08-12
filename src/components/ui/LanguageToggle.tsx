@@ -7,7 +7,13 @@ export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
 
   const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'es' : 'en');
+    if (language === 'en') {
+      setLanguage('es');
+    } else if (language === 'es') {
+      setLanguage('pt');
+    } else {
+      setLanguage('en');
+    }
   };
 
   return (
@@ -19,7 +25,7 @@ export default function LanguageToggle() {
     >
       <Globe className="h-4 w-4" />
       <span className="font-medium">
-        {language === 'en' ? 'EN' : 'ES'}
+        {language === 'en' ? 'EN' : language === 'es' ? 'ES' : 'PT'}
       </span>
     </Button>
   );

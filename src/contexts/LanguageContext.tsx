@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-type Language = "en" | "es";
+type Language = "en" | "es" | "pt";
 
 interface LanguageContextType {
   language: Language;
@@ -633,6 +633,323 @@ const translations = {
     "investment.range.dollars": "Rango de Inversión $",
     "investment.range.percentage": "Rango de Inversión %",
     "product.website": "Sitio Web del Producto",
+  },
+  pt: {
+    // Header
+    "skill.assignment": "Atribuição de Habilidades",
+    "super.power.money": "Potencialize seu dinheiro.",
+    "smart.decisions": "Decisões financeiras inteligentes começam aqui.",
+    "search.placeholder": "Tente 'empréstimo pessoal' ou 'refinanciamento'",
+    compare: "Comparar:",
+
+    // Navigation
+    loans: "Empréstimos",
+    "credit.card": "Cartões de Crédito",
+    mortgage: "Hipotecas",
+    banking: "Banco",
+
+    // Loan submenu
+    "auto.loans": "Empréstimos de Carro",
+    "auto.loan.refinancing": "Refinanciamento de Empréstimos de Carro",
+    "business.loans": "Empréstimos Empresariais",
+    "personal.lines.of.credit": "Linhas de Crédito Pessoal",
+    "personal.loans": "Empréstimos Pessoais",
+    "private.student.loans": "Empréstimos Estudantis Privados",
+    "student.loan.refinancing": "Refinanciamento de Empréstimos Estudantis",
+
+    // Credit Card submenu
+    "business.credit.cards": "Cartões de Crédito Empresariais",
+    "personal.credit.cards": "Cartões de Crédito Pessoais",
+    "prepaid.cards": "Cartões Pré-pagos",
+
+    // Mortgage submenu
+    "home.equity.loans": "Empréstimos de Capital Próprio",
+    "home.purchase.mortgages": "Hipotecas de Compra de Casa",
+    "mortgage.refinance": "Refinanciamento de Hipoteca",
+    "shared.equity.agreements": "Acordos de Capital Compartilhado",
+
+    // Banking submenu
+    "cd.accounts": "Contas CD",
+    "checking.accounts": "Contas Correntes",
+    "money.market.accounts": "Contas do Mercado Monetário",
+    "money.transfer.services": "Serviços de Transferência de Dinheiro",
+    "savings.accounts": "Contas de Poupança",
+
+    // Categories
+    category: "Categoria",
+    product: "Produto",
+
+    // Loan Components - Common
+    loading: "Carregando...",
+    "no.data.found": "Nenhum Dado Encontrado",
+    "no.data.found.for": "Nenhum dado encontrado para",
+    "component.not.found": "Componente Não Encontrado",
+    clear: "Limpar",
+    filter: "Filtrar",
+    fees: "TAXAS",
+    availability: "Disponibilidade",
+    "rates.terms": "Taxas e Termos",
+    "no.origination.fee": "Sem Taxa de Originação",
+    "no.prepayment.fee": "Sem Taxa de Pré-pagamento",
+    "origination.fee": "Taxa de Originação",
+    "no.additional.features": "Sem recursos adicionais",
+    any: "Qualquer",
+    "credit.score": "Pontuação de Crédito",
+    "loan.amount": "Valor do Empréstimo",
+    apr: "APR",
+    "loan.term": "Prazo do Empréstimo",
+    "additional.features": "Recursos Adicionais",
+    reviews: "Avaliações",
+    "mostly.recommended": "Maiormente recomendado",
+    "strongly.recommended": "Fortemente recomendado",
+    "reviews.count": "avaliações",
+    min: "Mín",
+    max: "Máx",
+    months: "meses",
+    years: "anos",
+    "no.late.fees": "Sem Taxas de Atraso",
+    "apply.now": "Aplicar Agora",
+    "learn.more": "Saiba Mais",
+    "view.details": "Ver Detalhes",
+    "compare.loans": "Comparar Empréstimos",
+    "sort.by": "Ordenar por",
+    "best.match": "Melhor Correspondência",
+    "lowest.apr": "APR Mais Baixa",
+    "highest.apr": "APR Mais Alta",
+    "lowest.loan.amount": "Valor de Empréstimo Mais Baixo",
+    "highest.loan.amount": "Valor de Empréstimo Mais Alto",
+    "lowest.credit.score": "Pontuação de Crédito Mais Baixa",
+    "highest.credit.score": "Pontuação de Crédito Mais Alta",
+    "results.found": "resultados encontrados",
+    showing: "Mostrando",
+    of: "de",
+    results: "resultados",
+
+    // Additional loan component strings
+    "no.loans.match.filters":
+      "Nenhum empréstimo corresponde aos seus filtros atuais",
+    "try.adjusting.filters":
+      "Tente ajustar suas preferências de APR, valor do empréstimo ou taxas",
+    "credit.score.range": "FAIXA DE PONTUAÇÃO DE CRÉDITO",
+    "loan.term.months": "PRAZO DO EMPRÉSTIMO (MESES)",
+    "additional.details": "DETALHES ADICIONAIS",
+    "desired.loan.amount": "Valor Desejado do Empréstimo",
+    "auto.loan": "Empréstimo de Carro",
+    recommended: "Recomendado",
+    "view.reviews": "Ver Avaliações",
+    "n.a": "N/A",
+
+    // Page titles and descriptions
+    "private.student.loans.title":
+      "Empréstimos Estudantis Privados: Avaliações e Comparações",
+    "private.student.loans.description":
+      "Procurando um empréstimo estudantil privado? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo estudantil privado?",
+    "personal.loans.title": "Empréstimos Pessoais: Avaliações e Comparações",
+    "personal.loans.description":
+      "Procurando um empréstimo pessoal? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo pessoal?",
+    "business.loans.title":
+      "Empréstimos Empresariais: Avaliações e Comparações",
+    "business.loans.description":
+      "Procurando um empréstimo empresarial? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo empresarial?",
+    "auto.loans.title": "Empréstimos de Carro: Avaliações e Comparações",
+    "auto.loans.description":
+      "Procurando um empréstimo de carro? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo de carro?",
+    "auto.title.loans.title":
+      "Empréstimos de Título de Carro: Avaliações e Comparações",
+    "auto.title.loans.description":
+      "Procurando um empréstimo de título de carro? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo de título de carro?",
+    "pay.day.loans.title":
+      "Empréstimos de Dia de Pagamento: Avaliações e Comparações",
+    "pay.day.loans.description":
+      "Procurando um empréstimo de dia de pagamento? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo de dia de pagamento?",
+    "personal.lines.of.credit.title":
+      "Linhas de Crédito Pessoal: Avaliações e Comparações",
+    "personal.lines.of.credit.description":
+      "Procurando uma linha de crédito pessoal? Você veio ao lugar certo. Mas o que você deve procurar em uma linha de crédito pessoal?",
+    "student.loan.refinancing.title":
+      "Refinanciamento de Empréstimos Estudantis: Avaliações e Comparações",
+    "student.loan.refinancing.description":
+      "Refinanciar empréstimos estudantis pode ajudá-lo a reduzir seus pagamentos consolidando seus empréstimos estudantis privados ou federais em um único empréstimo mais gerenciável.",
+    "auto.loan.refinancing.title":
+      "Refinanciamento de Empréstimos de Carro: Avaliações e Comparações",
+    "auto.loan.refinancing.description":
+      "Procurando um refinanciamento de empréstimo de carro? Você veio ao lugar certo. Mas o que você deve procurar em um refinanciamento de empréstimo de carro?",
+    "home.equity.loans.title":
+      "Empréstimos de Capital Próprio: Avaliações e Comparações",
+    "home.equity.loans.description":
+      "Procurando um empréstimo de capital próprio? Você veio ao lugar certo. Mas o que você deve procurar em um empréstimo de capital próprio?",
+    home: "Início",
+    loan: "Empréstimo",
+    "rating.not.yet.determined": "Avaliação ainda não determinada",
+    "fixed.apr": "APR FIXA",
+    "variable.apr": "APR VARIÁVEL",
+
+    // Credit Card Components - Common
+    "credit.limit": "Limite de Crédito",
+    "annual.fee": "Taxa Anual",
+    "intro.apr": "APR Introdutória",
+    "regular.apr": "APR Regular",
+    "balance.transfer": "Transferência de Saldo",
+    "cash.back": "Cashback",
+    "rewards.program": "Programa de Recompensas",
+    "travel.rewards": "Recompensas de Viagem",
+    "signup.bonus": "Bônus de Cadastro",
+    "foreign.transaction.fee": "Taxa de Transação Estrangeira",
+    "late.payment.fee": "Taxa de Pagamento Tardio",
+    "over.limit.fee": "Taxa por Exceder Limite",
+    "credit.score.required": "Pontuação de Crédito Necessária",
+    "card.type": "Tipo de Cartão",
+    "rewards.rate": "Taxa de Recompensas",
+    "intro.period": "Período Introdutório",
+    "balance.transfer.fee": "Taxa de Transferência de Saldo",
+    "cash.advance.fee": "Taxa de Adiantamento em Dinheiro",
+    "annual.percentage.rate": "Taxa de Percentual Anual",
+    "credit.limit.range": "FAIXA DE LIMITE DE CRÉDITO",
+    "annual.fee.range": "FAIXA DE TAXA ANUAL",
+    "intro.apr.range": "FAIXA DE APR INTRODUTÓRIA",
+    "regular.apr.range": "FAIXA DE APR REGULAR",
+
+    // Credit Card Page titles and descriptions
+    "personal.credit.cards.title":
+      "Cartões de Crédito Pessoais: Avaliações e Comparações",
+    "personal.credit.cards.description":
+      "Procurando um cartão de crédito pessoal? Você veio ao lugar certo. Mas o que você deve procurar em um cartão de crédito pessoal?",
+    "business.credit.cards.title":
+      "Cartões de Crédito Empresariais: Avaliações e Comparações",
+    "business.credit.cards.description":
+      "Procurando um cartão de crédito empresarial? Você veio ao lugar certo. Mas o que você deve procurar em um cartão de crédito empresarial?",
+    "prepaid.cards.title": "Cartões Pré-pagos: Avaliações e Comparações",
+    "prepaid.cards.description":
+      "Procurando um cartão pré-pago? Você veio ao lugar certo. Mas o que você deve procurar em um cartão pré-pago?",
+    "personal.credit.card": "Cartão de Crédito Pessoal",
+    "business.credit.card": "Cartão de Crédito Empresarial",
+    "prepaid.card": "Cartão Pré-pago",
+    "signature.purchase.transaction.fee":
+      "Taxa de Transação de Compra com Assinatura",
+    "pin.purchase.transaction.fee": "Taxa de Transação de Compra com PIN",
+    "monthly.fee": "Taxa Mensal",
+    "card.reload.fee": "Taxa de Recarga do Cartão",
+
+    // Banking Components - Common
+    "account.type": "Tipo de Conta",
+    "minimum.deposit": "Depósito Mínimo",
+    "minimum.balance": "Saldo Mínimo",
+    "interest.rate": "Taxa de Juros",
+    "annual.percentage.yield": "Rendimento Percentual Anual",
+    "monthly.maintenance.fee": "Taxa de Manutenção Mensal",
+    "overdraft.fee": "Taxa de Cheque Especial",
+    "atm.fee": "Taxa de ATM",
+    "wire.transfer.fee": "Taxa de Transferência Bancária",
+    "online.banking": "Banco Online",
+    "mobile.banking": "Banco Móvel",
+    "bill.pay": "Pagamento de Contas",
+    "direct.deposit": "Depósito Direto",
+    "debit.card": "Cartão de Débito",
+    "check.writing": "Escrita de Cheques",
+    "account.features": "Recursos da Conta",
+    "transfer.limit": "Limite de Transferência",
+    "daily.limit": "Limite Diário",
+    "monthly.limit": "Limite Mensal",
+    "transaction.limit": "Limite de Transação",
+    "fee.structure": "Estrutura de Taxas",
+    "account.benefits": "Benefícios da Conta",
+    "cd.term": "Prazo do CD",
+    "early.withdrawal.penalty": "Penalidade por Saque Antecipado",
+    "compounding.frequency": "Frequência de Composição",
+    "savings.goal": "Meta de Poupança",
+    "emergency.fund": "Fundo de Emergência",
+    "investment.options": "Opções de Investimento",
+    "money.market.rate": "Taxa do Mercado Monetário",
+    "checking.features": "Recursos de Conta Corrente",
+    "savings.features": "Recursos de Conta de Poupança",
+    "business.features": "Recursos Empresariais",
+
+    // Banking Page titles and descriptions
+    "checking.accounts.title": "Contas Correntes: Avaliações e Comparações",
+    "checking.accounts.description":
+      "Procurando uma conta corrente? Você veio ao lugar certo. Mas o que você deve procurar em uma conta corrente?",
+    "savings.accounts.title": "Contas de Poupança: Avaliações e Comparações",
+    "savings.accounts.description":
+      "Procurando uma conta de poupança? Você veio ao lugar certo. Mas o que você deve procurar em uma conta de poupança?",
+    "cd.accounts.title": "Contas CD: Avaliações e Comparações",
+    "cd.accounts.description":
+      "Procurando uma conta CD? Você veio ao lugar certo. Mas o que você deve procurar em uma conta CD?",
+    "money.market.accounts.title":
+      "Contas do Mercado Monetário: Avaliações e Comparações",
+    "money.market.accounts.description":
+      "Procurando uma conta do mercado monetário? Você veio ao lugar certo. Mas o que você deve procurar em uma conta do mercado monetário?",
+    "business.checking.accounts.title":
+      "Contas Correntes Empresariais: Avaliações e Comparações",
+    "business.checking.accounts.description":
+      "Procurando uma conta corrente empresarial? Você veio ao lugar certo. Mas o que você deve procurar em uma conta corrente empresarial?",
+    "money.transfer.services.title":
+      "Serviços de Transferência de Dinheiro: Avaliações e Comparações",
+    "money.transfer.services.description":
+      "Procurando serviços de transferência de dinheiro? Você veio ao lugar certo. Mas o que você deve procurar em serviços de transferência de dinheiro?",
+    "checking.account": "Conta Corrente",
+    "savings.account": "Conta de Poupança",
+    "cd.account": "Conta CD",
+    "money.market.account": "Conta do Mercado Monetário",
+    "business.checking.account": "Conta Corrente Empresarial",
+    "money.transfer.service": "Serviço de Transferência de Dinheiro",
+
+    // Mortgage Components - Common
+    "loan.term.years": "Prazo do Empréstimo (Anos)",
+    "maximum.ltv": "LTV Máximo",
+    "mortgage.type": "Tipo de Hipoteca",
+    "down.payment": "Entrada",
+    "closing.costs": "Custos de Fechamento",
+    "mortgage.insurance": "Seguro Hipotecário",
+    "property.type": "Tipo de Propriedade",
+    "debt.to.income.ratio": "Relação Dívida-Renda",
+    "mortgage.rate": "Taxa Hipotecária",
+    "fixed.rate": "Taxa Fixa",
+    "adjustable.rate": "Taxa Ajustável",
+    "conventional.mortgage": "Hipoteca Convencional",
+    "fha.mortgage": "Hipoteca FHA",
+    "va.mortgage": "Hipoteca VA",
+    "usda.mortgage": "Hipoteca USDA",
+    "jumbo.mortgage": "Hipoteca Jumbo",
+    "conforming.loan": "Empréstimo Conforme",
+    "non.conforming.loan": "Empréstimo Não Conforme",
+    "primary.residence": "Residência Principal",
+    "secondary.residence": "Residência Secundária",
+    "investment.property": "Propriedade de Investimento",
+    "mortgage.broker": "Corretor Hipotecário",
+    "reverse.mortgage": "Hipoteca Reversa",
+    "shared.equity.agreement": "Acordo de Capital Compartilhado",
+
+    // Mortgage Page titles and descriptions
+    "home.purchase.mortgages.title":
+      "Hipotecas de Compra de Casa: Avaliações e Comparações",
+    "home.purchase.mortgages.description":
+      "Procurando uma hipoteca de compra de casa? Você veio ao lugar certo. Mas o que você deve procurar em uma hipoteca de compra de casa?",
+    "mortgage.refinance.title":
+      "Refinanciamento de Hipoteca: Avaliações e Comparações",
+    "mortgage.refinance.description":
+      "Procurando refinanciamento de hipoteca? Você veio ao lugar certo. Mas o que você deve procurar em refinanciamento de hipoteca?",
+    "shared.equity.agreements.title":
+      "Acordos de Capital Compartilhado: Avaliações e Comparações",
+    "shared.equity.agreements.description":
+      "Procurando acordos de capital compartilhado? Você veio ao lugar certo. Mas o que você deve procurar em acordos de capital compartilhado?",
+    "mortgage.broker.title":
+      "Corretores Hipotecários: Avaliações e Comparações",
+    "mortgage.broker.description":
+      "Procurando um corretor hipotecário? Você veio ao lugar certo. Mas o que você deve procurar em um corretor hipotecário?",
+    "reverse.mortgages.title": "Hipotecas Reversas: Avaliações e Comparações",
+    "reverse.mortgages.description":
+      "Procurando uma hipoteca reversa? Você veio ao lugar certo. Mas o que você deve procurar em uma hipoteca reversa?",
+    "home.purchase.mortgage": "Hipoteca de Compra de Casa",
+    "mortgage.refinance.product": "Refinanciamento de Hipoteca",
+    "shared.equity.agreement.product": "Acordo de Capital Compartilhado",
+    "mortgage.broker.service": "Corretor Hipotecário",
+    "reverse.mortgage.product": "Hipoteca Reversa",
+
+    // Mortgage specific translations
+    "shared.equity.use.case": "Caso de Uso de Capital Compartilhado",
+    "investment.range.dollars": "Faixa de Investimento $",
+    "investment.range.percentage": "Faixa de Investimento %",
+    "product.website": "Site do Produto",
   },
 };
 

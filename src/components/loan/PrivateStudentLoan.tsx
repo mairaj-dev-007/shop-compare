@@ -444,7 +444,8 @@ export default function PrivateStudentLoan() {
                             style={{
                               width: `${
                                 (Number(loan.reviews.pink) /
-                                  (Number(loan.reviews.green) + Number(loan.reviews.pink))) *
+                                  (Number(loan.reviews.green) +
+                                    Number(loan.reviews.pink))) *
                                 100
                               }%`,
                             }}

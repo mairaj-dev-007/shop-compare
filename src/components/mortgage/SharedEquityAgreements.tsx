@@ -10,7 +10,9 @@ import { MortgageData, DataModule } from "@/types/mortgage";
 
 export default function SharedEquityAgreements() {
   const { t } = useLanguage();
-  const [mortgageDataArray, setMortgageDataArray] = useState<MortgageData[]>([]);
+  const [mortgageDataArray, setMortgageDataArray] = useState<MortgageData[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -136,15 +138,18 @@ export default function SharedEquityAgreements() {
                   {/* Shared Equity Use Case */}
                   <div className="py-4 px-6">
                     <div className="space-y-2">
-                      {mortgage.sharerdEquitCase && mortgage.sharerdEquitCase.length > 0 ? (
-                        mortgage.sharerdEquitCase.map((feature, idx: number) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <span className="text-blue-500 text-sm">✔</span>
-                            <span className="text-gray-700 text-sm">
-                              {feature.item}
-                            </span>
-                          </div>
-                        ))
+                      {mortgage.sharerdEquitCase &&
+                      mortgage.sharerdEquitCase.length > 0 ? (
+                        mortgage.sharerdEquitCase.map(
+                          (feature, idx: number) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <span className="text-blue-500 text-sm">✔</span>
+                              <span className="text-gray-700 text-sm">
+                                {feature.item}
+                              </span>
+                            </div>
+                          )
+                        )
                       ) : (
                         <div className="text-gray-400 text-sm">
                           {t("no.additional.features")}
@@ -167,8 +172,10 @@ export default function SharedEquityAgreements() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((Number(mortgage.investmentRangeD?.maxValue) || 0) /
-                                (Number(mortgage.investmentRangeD?.max) || 100000)) *
+                              ((Number(mortgage.investmentRangeD?.maxValue) ||
+                                0) /
+                                (Number(mortgage.investmentRangeD?.max) ||
+                                  100000)) *
                                 100,
                               100
                             )}%`,
@@ -196,8 +203,10 @@ export default function SharedEquityAgreements() {
                           className="h-full bg-blue-500 rounded-full"
                           style={{
                             width: `${Math.min(
-                              ((Number(mortgage.investmentRangeP?.maxValue) || 0) /
-                                (Number(mortgage.investmentRangeP?.max) || 25)) *
+                              ((Number(mortgage.investmentRangeP?.maxValue) ||
+                                0) /
+                                (Number(mortgage.investmentRangeP?.max) ||
+                                  25)) *
                                 100,
                               100
                             )}%`,

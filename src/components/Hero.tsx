@@ -6,7 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/ui/LanguageToggle";
@@ -15,46 +15,70 @@ import { NavCategory, SearchableItem } from "@/types";
 
 const getNavLinks = (t: (key: string) => string): NavCategory[] => [
   {
-    label: t('loans'),
+    label: t("loans"),
     href: "/Loan",
     submenu: [
-      { name: t('auto.loans'), href: "/Loan/autoLoan" },
-      { name: t('auto.loan.refinancing'), href: "/Loan/autoLoanRefinance" },
-      { name: t('business.loans'), href: "/Loan/businessLoan" },
-      { name: t('personal.lines.of.credit'), href: "/Loan/personalLinesOfCredit" },
-      { name: t('personal.loans'), href: "/Loan/personalLoan" },
-      { name: t('private.student.loans'), href: "/Loan/privateStudentLoan" },
-      { name: t('student.loan.refinancing'), href: "/Loan/StudentLoanRefinance" },
+      { name: t("auto.loans"), href: "/Loan/autoLoan" },
+      { name: t("auto.loan.refinancing"), href: "/Loan/autoLoanRefinance" },
+      { name: t("business.loans"), href: "/Loan/businessLoan" },
+      {
+        name: t("personal.lines.of.credit"),
+        href: "/Loan/personalLinesOfCredit",
+      },
+      { name: t("personal.loans"), href: "/Loan/personalLoan" },
+      { name: t("private.student.loans"), href: "/Loan/privateStudentLoan" },
+      {
+        name: t("student.loan.refinancing"),
+        href: "/Loan/StudentLoanRefinance",
+      },
     ],
   },
   {
-    label: t('credit.card'),
+    label: t("credit.card"),
     href: "/CreditCard",
     submenu: [
-      { name: t('business.credit.cards'), href: "/CreditCard/businessesCreditCard" },
-      { name: t('personal.credit.cards'), href: "/CreditCard/personalCreditCard" },
-      { name: t('prepaid.cards'), href: "/CreditCard/prepaidCard" },
+      {
+        name: t("business.credit.cards"),
+        href: "/CreditCard/businessesCreditCard",
+      },
+      {
+        name: t("personal.credit.cards"),
+        href: "/CreditCard/personalCreditCard",
+      },
+      { name: t("prepaid.cards"), href: "/CreditCard/prepaidCard" },
     ],
   },
   {
-    label: t('mortgage'),
+    label: t("mortgage"),
     href: "Mortgage",
     submenu: [
-      { name: t('home.equity.loans'), href: "/Mortgage/homeEquityLoan" },
-      { name: t('home.purchase.mortgages'), href: "/Mortgage/homePurchaseMortgages" },
-      { name: t('mortgage.refinance'), href: "/Mortgage/mortgageRefinance" },
-      { name: t('shared.equity.agreements'), href: "/Mortgage/sharedEquityAgreements" },
+      { name: t("home.equity.loans"), href: "/Mortgage/homeEquityLoan" },
+      {
+        name: t("home.purchase.mortgages"),
+        href: "/Mortgage/homePurchaseMortgages",
+      },
+      { name: t("mortgage.refinance"), href: "/Mortgage/mortgageRefinance" },
+      {
+        name: t("shared.equity.agreements"),
+        href: "/Mortgage/sharedEquityAgreements",
+      },
     ],
   },
   {
-    label: t('banking'),
+    label: t("banking"),
     href: "Banking",
     submenu: [
-      { name: t('cd.accounts'), href: "/Banking/cdAccounts" },
-      { name: t('checking.accounts'), href: "/Banking/checkingAccounts" },
-      { name: t('money.market.accounts'), href: "/Banking/moneyMarketAccounts" },
-      { name: t('money.transfer.services'), href: "/Banking/moneyTransferServices" },
-      { name: t('savings.accounts'), href: "/Banking/savingAcc" },
+      { name: t("cd.accounts"), href: "/Banking/cdAccounts" },
+      { name: t("checking.accounts"), href: "/Banking/checkingAccounts" },
+      {
+        name: t("money.market.accounts"),
+        href: "/Banking/moneyMarketAccounts",
+      },
+      {
+        name: t("money.transfer.services"),
+        href: "/Banking/moneyTransferServices",
+      },
+      { name: t("savings.accounts"), href: "/Banking/savingAcc" },
     ],
   },
 ];
@@ -76,8 +100,11 @@ export default function Home() {
   const router = useRouter();
   const { t } = useLanguage();
 
-  const navLinks = getNavLinks(t);
-  const searchableItems = getSearchableItems(navLinks);
+  const navLinks = useMemo(() => getNavLinks(t), [t]);
+  const searchableItems = useMemo(
+    () => getSearchableItems(navLinks),
+    [navLinks]
+  );
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -113,12 +140,10 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <header className="w-full flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2">
-          <Image
+          <img
             src="/logo.png"
             alt="Northwell Health"
-            width={72}
-            height={72}
-            className="h-18 w-auto"
+            className="h-auto w-auto"
           />
         </div>
         <LanguageToggle />
@@ -127,18 +152,16 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6">
         <div className="w-full max-w-2xl text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            {t('super.power.money')}
+            {t("super.power.money")}
           </h1>
-          <p className="text-lg text-gray-700 mb-8">
-            {t('smart.decisions')}
-          </p>
+          <p className="text-lg text-gray-700 mb-8">{t("smart.decisions")}</p>
           <div className="w-full max-w-lg mx-auto mb-6">
             <div className="relative">
               <div className="flex items-center border border-gray-300 rounded-lg bg-white shadow-sm px-4 py-3">
                 <Search className="text-orange-500 h-5 w-5" />
                 <input
                   type="text"
-                  placeholder={t('search.placeholder')}
+                  placeholder={t("search.placeholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={handleInputFocus}
@@ -164,7 +187,9 @@ export default function Home() {
                           </div>
                         </div>
                         <div className="text-xs text-gray-400">
-                          {item.category === item.name ? t('category') : t('product')}
+                          {item.category === item.name
+                            ? t("category")
+                            : t("product")}
                         </div>
                       </div>
                     </button>
@@ -174,7 +199,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center justify-center gap-4">
-            <span className="text-gray-700 font-medium">{t('compare')}</span>
+            <span className="text-gray-700 font-medium">{t("compare")}</span>
             {navLinks.map((link) => (
               <HoverCard key={link.label}>
                 <HoverCardTrigger asChild>

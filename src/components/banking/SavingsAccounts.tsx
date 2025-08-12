@@ -166,7 +166,8 @@ export default function SavingsAccounts() {
                             style={{
                               width: `${
                                 (Number(item.reviews.pink) /
-                                  (Number(item.reviews.green) + Number(item.reviews.pink))) *
+                                  (Number(item.reviews.green) +
+                                    Number(item.reviews.pink))) *
                                 100
                               }%`,
                             }}
