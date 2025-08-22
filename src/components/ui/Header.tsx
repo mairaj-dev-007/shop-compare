@@ -6,7 +6,7 @@ export default function Header() {
       <div className="flex items-center gap-4">
         <Image 
           src="/logo.png" 
-          alt="North-well Health" 
+          alt="Northwell Health" 
           width={32}
           height={32}
           className="h-8 w-auto" 
