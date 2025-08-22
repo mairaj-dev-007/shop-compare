@@ -3,11 +3,19 @@ name: Deploy to Coolify
 on:
   push:
     branches:
-      - main   # or master, whichever you use
+      - main   # or 'master' if that's your default branch
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: curl -X POST "${{ secrets.COOLIFY_DEPLOY_URL }}"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Trigger Coolify Deployment
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"force": true}' \
+            "${{ secrets.COOLIFY_DEPLOY_URL }}"
