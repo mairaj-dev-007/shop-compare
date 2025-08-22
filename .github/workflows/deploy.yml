@@ -7,13 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Trigger Coolify Deployment
-        run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            "${{ secrets.COOLIFY_DEPLOY_URL }}"
+      - uses: actions/checkout@v3
+      - run: curl -X POST "${{ secrets.COOLIFY_DEPLOY_URL }}"
