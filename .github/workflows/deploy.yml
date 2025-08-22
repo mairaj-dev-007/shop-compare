@@ -1,0 +1,19 @@
+name: Deploy to Coolify
+
+on:
+  push:
+    branches:
+      - main   # or master, whichever you use
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Trigger Coolify Deployment
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            "${{ secrets.COOLIFY_DEPLOY_URL }}"
