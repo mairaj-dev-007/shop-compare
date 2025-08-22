@@ -25,7 +25,7 @@ export default function CreditCardTypePage() {
               );
               setComponent(() => BusinessesCreditCard);
               break;
-            case "personalCreditCard":
+            case "selfCreditCard":
               const { default: PersonalCreditCard } = await import(
                 "@/components/creditcard/PersonalCreditCard"
               );
